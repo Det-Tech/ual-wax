@@ -13,7 +13,7 @@ const LIMITLESS_WAX_PUBLIC_KEY: string = "PUB_K1_7FUX7yAxiff74N2GEgainGr5jYnKmeY
 const LIMITLESS_WAX_BACKEND_URL: string = "api.limitlesswax.co";
 
 
-class Wax extends Authenticator {
+export class Wax extends Authenticator {
     private wax?: WaxJS;
     private users: WaxUser[] = [];
 
