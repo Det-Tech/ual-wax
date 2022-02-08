@@ -1,5 +1,5 @@
 {
-  "name": "@eosdacio/ual-wax",
+  "name": "@deraxyna/ual-wax",
   "version": "1.6.0",
   "description": "",
   "main": "dist/index.js",
@@ -9,8 +9,8 @@
   },
   "license": "MIT",
   "author": {
-    "name": "eosDAC",
-    "url": "https://eosdac.io/"
+    "name": "deraXyna",
+    "url": "limitlesswax.co"
   },
   "dependencies": {
     "@waxio/waxjs": "^1.0.4",
