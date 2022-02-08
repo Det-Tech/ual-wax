@@ -23,10 +23,10 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@waxio/waxjs@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@waxio/waxjs/-/waxjs-1.0.1.tgz#37d9b6d8f47295bb4f984994483bb22200490188"
-  integrity sha512-U/z+8p05bF5i+Yx31JDA9IYG+LiKSdbPQ03rm1cXGppsMdrmQPRSqK1+MBM2gt4pmk4pmi4IzcLs4Xbk5llPMQ==
+"@waxio/waxjs@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@waxio/waxjs/-/waxjs-1.0.4.tgz#707dc08ba7f681c9ba753431ab8fbfe901890938"
+  integrity sha512-fe2VLu5x30LBW/9+kTNek5MbKYdvtEXBXt9lgTcMYwyCSvcZzxi7FGwOYdUy5FwVYESJX+Pki+KdYh0CtazUuA==
   dependencies:
     eosjs "^22.1.0"
 

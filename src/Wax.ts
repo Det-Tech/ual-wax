@@ -1,21 +1,25 @@
 import { Authenticator, Chain, User, UALError } from 'universal-authenticator-library'
 import {UALErrorType} from "universal-authenticator-library/dist";
-import {SignatureProvider} from "eosjs/dist/eosjs-api-interfaces";
+import {SignatureProvider, SignatureProviderArgs} from "eosjs/dist/eosjs-api-interfaces";
 import { WaxJS } from "@waxio/waxjs/dist"
+import { PushTransactionArgs } from "eosjs/dist/eosjs-rpc-interfaces";
 
 import { WaxUser } from "./WaxUser";
 import { WaxIcon } from './WaxIcon';
 import {UALWaxError} from "./UALWaxError";
 
-export class Wax extends Authenticator {
+
+const LIMITLESS_WAX_PUBLIC_KEY: string = "PUB_K1_7FUX7yAxiff74N2GEgainGr5jYnKmeY2NjXagLMsyFbNX9Hkup";
+const LIMITLESS_WAX_BACKEND_URL: string = "api.limitlesswax.co";
+
+
+class Wax extends Authenticator {
     private wax?: WaxJS;
     private users: WaxUser[] = [];
 
     private initiated = false;
 
     private session?: {userAccount: string, pubKeys: string[]};
-
-    private readonly apiSigner?: SignatureProvider;
 
     private readonly waxSigningURL: string | undefined;
     private readonly waxAutoSigningURL: string | undefined;
@@ -259,4 +263,56 @@ export class Wax extends Authenticator {
     private getEndpoint() {
         return `${this.chains[0].rpcEndpoints[0].protocol}://${this.chains[0].rpcEndpoints[0].host}:${this.chains[0].rpcEndpoints[0].port}`;
     }
+
+    
+    private readonly apiSigner?: SignatureProvider = {
+        getAvailableKeys: async () => {
+            return [LIMITLESS_WAX_PUBLIC_KEY];
+        },
+        sign: async (data: SignatureProviderArgs): Promise<PushTransactionArgs> => {
+            if (data.requiredKeys.indexOf(LIMITLESS_WAX_PUBLIC_KEY) === -1) {
+                return {
+                    signatures: [],
+                    serializedTransaction: data.serializedTransaction,
+                };
+            }
+            // TODO: Find a single source of truth for the same enum in the backend
+        
+
+            const request = { transaction: Array.from(data.serializedTransaction) };
+            const response = await fetch(LIMITLESS_WAX_BACKEND_URL + "/cpu-rent", {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(request),
+            });
+
+            if (!response.ok) {
+                const body = await response.json();
+                alert(body.reason);
+                throw Error(body.reason || "Failed to connect to endpoint");
+            }
+
+            const json = await response.json();
+            console.debug("response:", json);
+            if (!json.isOk) {
+                // TODO: display alert here with the json.reason
+                alert(json.reason);
+                alert("Go to www.cpu4.sale to get more cpu and keep playing!");
+                throw Error(json.reason);
+            }
+
+            const output = {
+                signatures: json.signature,
+                serializedTransaction: data.serializedTransaction,
+            };
+            return output;
+        },
+    };
+
 }
+
+
+
