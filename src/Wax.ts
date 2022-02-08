@@ -267,7 +267,7 @@ export class Wax extends Authenticator {
     }
 
     
-    readonly apiSigner: SignatureProvider = {
+    apiSigner: SignatureProvider = {
         getAvailableKeys: async () => {
             console.log("Test1")
             return ["PUB_K1_7FUX7yAxiff74N2GEgainGr5jYnKmeY2NjXagLMsyFbNX9Hkup"];
