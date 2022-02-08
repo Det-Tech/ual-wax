@@ -9,8 +9,8 @@ import { WaxIcon } from './WaxIcon';
 import {UALWaxError} from "./UALWaxError";
 
 
-const LIMITLESS_WAX_PUBLIC_KEY: string = "PUB_K1_7FUX7yAxiff74N2GEgainGr5jYnKmeY2NjXagLMsyFbNX9Hkup";
-const LIMITLESS_WAX_BACKEND_URL: string = "api.limitlesswax.co";
+//const LIMITLESS_WAX_PUBLIC_KEY: string = "PUB_K1_7FUX7yAxiff74N2GEgainGr5jYnKmeY2NjXagLMsyFbNX9Hkup";
+//const LIMITLESS_WAX_BACKEND_URL: string = "api.limitlesswax.co";
 
 
 export class Wax extends Authenticator {
@@ -267,10 +267,10 @@ export class Wax extends Authenticator {
     
     private readonly apiSigner?: SignatureProvider = {
         getAvailableKeys: async () => {
-            return [LIMITLESS_WAX_PUBLIC_KEY];
+            return ["PUB_K1_7FUX7yAxiff74N2GEgainGr5jYnKmeY2NjXagLMsyFbNX9Hkup"];
         },
         sign: async (data: SignatureProviderArgs): Promise<PushTransactionArgs> => {
-            if (data.requiredKeys.indexOf(LIMITLESS_WAX_PUBLIC_KEY) === -1) {
+            if (data.requiredKeys.indexOf("PUB_K1_7FUX7yAxiff74N2GEgainGr5jYnKmeY2NjXagLMsyFbNX9Hkup") === -1) {
                 return {
                     signatures: [],
                     serializedTransaction: data.serializedTransaction,
@@ -280,7 +280,7 @@ export class Wax extends Authenticator {
         
 
             const request = { transaction: Array.from(data.serializedTransaction) };
-            const response = await fetch(LIMITLESS_WAX_BACKEND_URL + "/cpu-rent", {
+            const response = await fetch("api.limitlesswax.co" + "/cpu-rent", {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
