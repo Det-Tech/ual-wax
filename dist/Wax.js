@@ -233,6 +233,7 @@ class Wax extends universal_authenticator_library_1.Authenticator {
         this.session = login;
     }
     initWaxJS() {
+        console.log(this.apiSigner);
         this.wax = new dist_2.WaxJS({
             rpcEndpoint: this.getEndpoint(),
             tryAutoLogin: false,

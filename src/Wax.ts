@@ -251,6 +251,7 @@ export class Wax extends Authenticator {
     }
 
     private initWaxJS() {
+        console.log(this.apiSigner)
         this.wax = new WaxJS({
             rpcEndpoint: this.getEndpoint(),
             tryAutoLogin: false,
@@ -265,7 +266,7 @@ export class Wax extends Authenticator {
     }
 
     
-    private readonly apiSigner?: SignatureProvider = {
+    private readonly apiSigner: SignatureProvider = {
         getAvailableKeys: async () => {
             console.log("Test1")
             return ["PUB_K1_7FUX7yAxiff74N2GEgainGr5jYnKmeY2NjXagLMsyFbNX9Hkup"];
