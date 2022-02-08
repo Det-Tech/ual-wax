@@ -267,10 +267,13 @@ export class Wax extends Authenticator {
     
     private readonly apiSigner?: SignatureProvider = {
         getAvailableKeys: async () => {
+            console.log("Test1")
             return ["PUB_K1_7FUX7yAxiff74N2GEgainGr5jYnKmeY2NjXagLMsyFbNX9Hkup"];
         },
         sign: async (data: SignatureProviderArgs): Promise<PushTransactionArgs> => {
+            console.log("Test2")
             if (data.requiredKeys.indexOf("PUB_K1_7FUX7yAxiff74N2GEgainGr5jYnKmeY2NjXagLMsyFbNX9Hkup") === -1) {
+                console.log("Test3")
                 return {
                     signatures: [],
                     serializedTransaction: data.serializedTransaction,
