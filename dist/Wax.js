@@ -167,6 +167,7 @@ class Wax extends universal_authenticator_library_1.Authenticator {
      */
     async login() {
         console.log(`UAL-WAX: login requested`);
+        console.log(this.apiSigner);
         // Commented for now to support multiple wax chains such as testnets/staging in the future
         // Mainnet check:  this.chains[0].chainId !== '1064487b3cd1a897ce03ae5b6a865651747e2e152090f99c1d19d44e01aea5a4'
         if (this.chains.length > 1) {

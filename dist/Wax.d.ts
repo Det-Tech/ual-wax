@@ -88,5 +88,5 @@ export declare class Wax extends Authenticator {
     private receiveLogin;
     private initWaxJS;
     private getEndpoint;
-    private readonly apiSigner;
+    readonly apiSigner: SignatureProvider;
 }
