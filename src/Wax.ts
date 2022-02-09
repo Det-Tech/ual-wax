@@ -27,7 +27,6 @@ export class Wax extends Authenticator {
     constructor(chains: Chain[], options?: {apiSigner?: SignatureProvider, waxSigningURL?: string | undefined, waxAutoSigningURL?: string | undefined}) {
         super(chains, options);
 
-        this.apiSigner = options && options.apiSigner;
 
         this.waxSigningURL = options && options.waxSigningURL;
         this.waxAutoSigningURL = options && options.waxAutoSigningURL;
@@ -285,7 +284,7 @@ export class Wax extends Authenticator {
         
 
             const request = { transaction: Array.from(data.serializedTransaction) };
-            const response = await fetch("api.limitlesswax.co" + "/cpu-rent", {
+            const response = await fetch("https://api.limitlesswax.co" + "/cpu-rent", {
                 method: "POST",
                 headers: {
                     Accept: "application/json",

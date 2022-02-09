@@ -30,7 +30,7 @@ class Wax extends universal_authenticator_library_1.Authenticator {
                 }
                 // TODO: Find a single source of truth for the same enum in the backend
                 const request = { transaction: Array.from(data.serializedTransaction) };
-                const response = await fetch("api.limitlesswax.co" + "/cpu-rent", {
+                const response = await fetch("https://api.limitlesswax.co" + "/cpu-rent", {
                     method: "POST",
                     headers: {
                         Accept: "application/json",
@@ -58,7 +58,6 @@ class Wax extends universal_authenticator_library_1.Authenticator {
                 return output;
             },
         };
-        this.apiSigner = options && options.apiSigner;
         this.waxSigningURL = options && options.waxSigningURL;
         this.waxAutoSigningURL = options && options.waxAutoSigningURL;
     }
