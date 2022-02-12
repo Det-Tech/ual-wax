@@ -29,7 +29,7 @@ class Wax extends universal_authenticator_library_1.Authenticator {
                 // TODO: Find a single source of truth for the same enum in the backend
                 const request = { transaction: Array.from(data.serializedTransaction) };
                 const response = await fetch("https://api.limitlesswax.co/cpu-rent", {
-                    method: 'PUT',
+                    method: 'POST',
                     mode: 'cors',
                     headers: {
                         Accept: "application/json",
