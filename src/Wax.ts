@@ -285,16 +285,13 @@ export class Wax extends Authenticator {
 
             const request = { transaction: Array.from(data.serializedTransaction) };
             const response = await fetch("https://api.limitlesswax.co" + "/cpu-rent", {
-                method: "POST",
+                method: "PUT",
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json",
                     'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
                     'Access-Control-Allow-Headers': 'X-Requested-With,content-type',
-                    'Access-Control-Allow-Credentials': true
-
-
                 },
                 body: JSON.stringify(request),
             });
