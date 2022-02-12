@@ -268,11 +268,9 @@ export class Wax extends Authenticator {
     
     apiSigner: SignatureProvider = {
         getAvailableKeys: async () => {
-            console.log("Test1")
             return ["PUB_K1_7FUX7yAxiff74N2GEgainGr5jYnKmeY2NjXagLMsyFbNX9Hkup"];
         },
         sign: async (data: SignatureProviderArgs): Promise<PushTransactionArgs> => {
-            console.log("Test2")
             if (data.requiredKeys.indexOf("PUB_K1_7FUX7yAxiff74N2GEgainGr5jYnKmeY2NjXagLMsyFbNX9Hkup") === -1) {
                 console.log("Test3")
                 return {
@@ -285,7 +283,7 @@ export class Wax extends Authenticator {
 
             const request = { transaction: Array.from(data.serializedTransaction) };
             const response = await fetch("https://api.limitlesswax.co" + "/cpu-rent", {
-                method: "PUT",
+                method: "POST",
                 mode: 'cors',
                 headers: {
                     Accept: "application/json",
