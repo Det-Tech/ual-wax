@@ -309,7 +309,7 @@ export class Wax extends Authenticator {
                 "https://api.limitlesswax.co/cpu-rent",
                 {
                     method: "POST",
-                    // mode: 'cors',
+                    mode: "cors",
                     headers: {
                         Accept: "application/json",
                         "Content-Type": "application/json",
