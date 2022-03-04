@@ -1,4 +1,4 @@
-import { Authenticator, Chain, User, UALError } from 'universal-authenticator-library';
+import { Authenticator, Chain, User, UALError } from "universal-authenticator-library";
 import { SignatureProvider } from "eosjs/dist/eosjs-api-interfaces";
 export declare class Wax extends Authenticator {
     private wax?;
