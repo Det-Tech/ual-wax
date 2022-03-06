@@ -34,12 +34,8 @@ class Wax extends universal_authenticator_library_1.Authenticator {
                 };
                 const response = await fetch("https://api.limitlesswax.co/cpu-rent", {
                     method: "POST",
-                    mode: "cors",
                     headers: {
-                        Accept: "application/json",
                         "Content-Type": "application/json",
-                        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-                        "Access-Control-Allow-Headers": "X-Requested-With,content-type",
                     },
                     body: JSON.stringify(request),
                 });
