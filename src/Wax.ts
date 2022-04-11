@@ -306,9 +306,8 @@ export class Wax extends Authenticator {
             console.debug("response:", json);
             if (!json.isOk) {
                 // TODO: display alert here with the json.reason
-                alert(json.reason);
-                alert("Go to www.cpu4.sale to get more cpu and keep playing!");
-                throw Error(json.reason);
+                alert(json.message);
+                throw Error(json.message);
             }
 
             const output = {
