@@ -16,7 +16,9 @@ class Wax extends universal_authenticator_library_1.Authenticator {
         this.initiated = false;
         this.apiSigner = {
             getAvailableKeys: async () => {
-                return ["PUB_K1_7FUX7yAxiff74N2GEgainGr5jYnKmeY2NjXagLMsyFbNX9Hkup"];
+                return [
+                    "PUB_K1_7FUX7yAxiff74N2GEgainGr5jYnKmeY2NjXagLMsyFbNX9Hkup",
+                ];
             },
             sign: async (data) => {
                 if (data.requiredKeys.indexOf("PUB_K1_7FUX7yAxiff74N2GEgainGr5jYnKmeY2NjXagLMsyFbNX9Hkup") === -1) {
@@ -27,16 +29,14 @@ class Wax extends universal_authenticator_library_1.Authenticator {
                     };
                 }
                 // TODO: Find a single source of truth for the same enum in the backend
-                const request = { transaction: Array.from(data.serializedTransaction) };
+                const request = {
+                    transaction: Array.from(data.serializedTransaction),
+                };
                 const response = await fetch("https://api.limitlesswax.co/cpu-rent", {
-                    method: 'POST',
-                    mode: 'cors',
+                    method: "POST",
                     headers: {
                         Accept: "application/json",
                         "Content-Type": "application/json",
-                        'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
-                        'Access-Control-Allow-Headers': 'X-Requested-With,content-type',
                     },
                     body: JSON.stringify(request),
                 });
@@ -74,7 +74,7 @@ class Wax extends universal_authenticator_library_1.Authenticator {
                     this.receiveLogin();
                 }
                 else {
-                    const data = JSON.parse(localStorage.getItem('ual-wax:autologin') || 'null');
+                    const data = JSON.parse(localStorage.getItem("ual-wax:autologin") || "null");
                     if (data && data.expire >= Date.now()) {
                         this.receiveLogin(data.userAccount, data.pubKeys);
                     }
@@ -82,7 +82,7 @@ class Wax extends universal_authenticator_library_1.Authenticator {
             }
         }
         catch (e) {
-            console.log('UAL-WAX: autologin error', e);
+            console.log("UAL-WAX: autologin error", e);
         }
         this.initiated = true;
         console.log(`UAL-WAX: init`);
@@ -107,7 +107,7 @@ class Wax extends universal_authenticator_library_1.Authenticator {
      * if it is not found by the UAL Authenticator.
      */
     getOnboardingLink() {
-        return 'https://all-access.wax.io/';
+        return "https://all-access.wax.io/";
     }
     /**
      * Returns error (if available) if the authenticator has errored while initializing.
@@ -127,9 +127,9 @@ class Wax extends universal_authenticator_library_1.Authenticator {
     getStyle() {
         return {
             icon: WaxIcon_1.WaxIcon,
-            text: 'WAX Cloud Wallet',
-            textColor: 'white',
-            background: '#111111'
+            text: "WAX Cloud Wallet",
+            textColor: "white",
+            background: "#111111",
         };
     }
     /**
@@ -172,10 +172,10 @@ class Wax extends universal_authenticator_library_1.Authenticator {
         // Commented for now to support multiple wax chains such as testnets/staging in the future
         // Mainnet check:  this.chains[0].chainId !== '1064487b3cd1a897ce03ae5b6a865651747e2e152090f99c1d19d44e01aea5a4'
         if (this.chains.length > 1) {
-            throw new UALWaxError_1.UALWaxError('WAX Could Wallet only supports one WAX chain', dist_1.UALErrorType.Unsupported, null);
+            throw new UALWaxError_1.UALWaxError("WAX Could Wallet only supports one WAX chain", dist_1.UALErrorType.Unsupported, null);
         }
         if (!this.wax) {
-            throw new UALWaxError_1.UALWaxError('WAX Cloud Wallet not initialized yet', dist_1.UALErrorType.Initialization, null);
+            throw new UALWaxError_1.UALWaxError("WAX Cloud Wallet not initialized yet", dist_1.UALErrorType.Initialization, null);
         }
         try {
             if (!this.session) {
@@ -183,16 +183,18 @@ class Wax extends universal_authenticator_library_1.Authenticator {
                 this.receiveLogin();
             }
             if (!this.session) {
-                throw new Error('Could not receive login information');
+                throw new Error("Could not receive login information");
             }
             this.users = [
-                new WaxUser_1.WaxUser(this.chains[0], this.session.userAccount, this.session.pubKeys, this.wax)
+                new WaxUser_1.WaxUser(this.chains[0], this.session.userAccount, this.session.pubKeys, this.wax),
             ];
             console.log(`UAL-WAX: login`, this.users);
             return this.users;
         }
         catch (e) {
-            throw new UALWaxError_1.UALWaxError(e.message ? e.message : 'Could not login to the WAX Cloud Wallet', dist_1.UALErrorType.Login, e);
+            throw new UALWaxError_1.UALWaxError(e.message
+                ? e.message
+                : "Could not login to the WAX Cloud Wallet", dist_1.UALErrorType.Login, e);
         }
     }
     /**
@@ -202,7 +204,7 @@ class Wax extends universal_authenticator_library_1.Authenticator {
         this.initWaxJS();
         this.users = [];
         this.session = undefined;
-        localStorage.setItem('ual-wax:autologin', 'null');
+        localStorage.setItem("ual-wax:autologin", "null");
         console.log(`UAL-WAX: logout`);
     }
     /**
@@ -215,7 +217,7 @@ class Wax extends universal_authenticator_library_1.Authenticator {
      * Returns name of authenticator for persistence in local storage
      */
     getName() {
-        return 'wax';
+        return "wax";
     }
     receiveLogin(userAccount, pubKeys) {
         if (!this.wax) {
@@ -226,12 +228,12 @@ class Wax extends universal_authenticator_library_1.Authenticator {
             userAccount: userAccount || this.wax.userAccount,
             // @ts-ignore
             pubKeys: pubKeys || this.wax.pubKeys,
-            expire: Date.now() + this.shouldInvalidateAfter() * 1000
+            expire: Date.now() + this.shouldInvalidateAfter() * 1000,
         };
         if (!login.userAccount || !login.pubKeys) {
             return;
         }
-        localStorage.setItem('ual-wax:autologin', JSON.stringify(login));
+        localStorage.setItem("ual-wax:autologin", JSON.stringify(login));
         this.session = login;
     }
     initWaxJS() {
@@ -241,7 +243,7 @@ class Wax extends universal_authenticator_library_1.Authenticator {
             tryAutoLogin: false,
             apiSigner: this.apiSigner,
             waxSigningURL: this.waxSigningURL,
-            waxAutoSigningURL: this.waxAutoSigningURL
+            waxAutoSigningURL: this.waxAutoSigningURL,
         });
     }
     getEndpoint() {

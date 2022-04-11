@@ -1,17 +1,23 @@
-import { Authenticator, Chain, User, UALError } from 'universal-authenticator-library'
-import {UALErrorType} from "universal-authenticator-library/dist";
-import {SignatureProvider, SignatureProviderArgs} from "eosjs/dist/eosjs-api-interfaces";
-import { WaxJS } from "@waxio/waxjs/dist"
+import {
+    Authenticator,
+    Chain,
+    User,
+    UALError,
+} from "universal-authenticator-library";
+import { UALErrorType } from "universal-authenticator-library/dist";
+import {
+    SignatureProvider,
+    SignatureProviderArgs,
+} from "eosjs/dist/eosjs-api-interfaces";
+import { WaxJS } from "@waxio/waxjs/dist";
 import { PushTransactionArgs } from "eosjs/dist/eosjs-rpc-interfaces";
 
 import { WaxUser } from "./WaxUser";
-import { WaxIcon } from './WaxIcon';
-import {UALWaxError} from "./UALWaxError";
-
+import { WaxIcon } from "./WaxIcon";
+import { UALWaxError } from "./UALWaxError";
 
 //const LIMITLESS_WAX_PUBLIC_KEY: string = "PUB_K1_7FUX7yAxiff74N2GEgainGr5jYnKmeY2NjXagLMsyFbNX9Hkup";
 //const LIMITLESS_WAX_BACKEND_URL: string = "api.limitlesswax.co";
-
 
 export class Wax extends Authenticator {
     private wax?: WaxJS;
@@ -19,14 +25,20 @@ export class Wax extends Authenticator {
 
     private initiated = false;
 
-    private session?: {userAccount: string, pubKeys: string[]};
+    private session?: { userAccount: string; pubKeys: string[] };
 
     private readonly waxSigningURL: string | undefined;
     private readonly waxAutoSigningURL: string | undefined;
 
-    constructor(chains: Chain[], options?: {apiSigner?: SignatureProvider, waxSigningURL?: string | undefined, waxAutoSigningURL?: string | undefined}) {
+    constructor(
+        chains: Chain[],
+        options?: {
+            apiSigner?: SignatureProvider;
+            waxSigningURL?: string | undefined;
+            waxAutoSigningURL?: string | undefined;
+        }
+    ) {
         super(chains, options);
-
 
         this.waxSigningURL = options && options.waxSigningURL;
         this.waxAutoSigningURL = options && options.waxAutoSigningURL;
@@ -43,7 +55,9 @@ export class Wax extends Authenticator {
                 if (await this.wax.isAutoLoginAvailable()) {
                     this.receiveLogin();
                 } else {
-                    const data = JSON.parse(localStorage.getItem('ual-wax:autologin') || 'null');
+                    const data = JSON.parse(
+                        localStorage.getItem("ual-wax:autologin") || "null"
+                    );
 
                     if (data && data.expire >= Date.now()) {
                         this.receiveLogin(data.userAccount, data.pubKeys);
@@ -51,14 +65,13 @@ export class Wax extends Authenticator {
                 }
             }
         } catch (e) {
-            console.log('UAL-WAX: autologin error', e);
+            console.log("UAL-WAX: autologin error", e);
         }
 
         this.initiated = true;
 
         console.log(`UAL-WAX: init`);
     }
-
 
     /**
      * Resets the authenticator to its initial, default state then calls `init` method
@@ -70,7 +83,6 @@ export class Wax extends Authenticator {
         this.session = undefined;
     }
 
-
     /**
      * Returns true if the authenticator has errored while initializing.
      */
@@ -78,15 +90,13 @@ export class Wax extends Authenticator {
         return false;
     }
 
-
     /**
      * Returns a URL where the user can download and install the underlying authenticator
      * if it is not found by the UAL Authenticator.
      */
     getOnboardingLink() {
-        return 'https://all-access.wax.io/';
+        return "https://all-access.wax.io/";
     }
-
 
     /**
      * Returns error (if available) if the authenticator has errored while initializing.
@@ -95,7 +105,6 @@ export class Wax extends Authenticator {
         return null;
     }
 
-
     /**
      * Returns true if the authenticator is loading while initializing its internal state.
      */
@@ -103,19 +112,17 @@ export class Wax extends Authenticator {
         return !this.initiated;
     }
 
-
     /**
      * Returns the style of the Button that will be rendered.
      */
     getStyle() {
         return {
             icon: WaxIcon,
-            text: 'WAX Cloud Wallet',
-            textColor: 'white',
-            background: '#111111'
-        }
+            text: "WAX Cloud Wallet",
+            textColor: "white",
+            background: "#111111",
+        };
     }
-
 
     /**
      * Returns whether or not the button should render based on the operating environment and other factors.
@@ -125,7 +132,6 @@ export class Wax extends Authenticator {
         return true;
     }
 
-
     /**
      * Returns whether or not the dapp should attempt to auto login with the Authenticator app.
      * Auto login will only occur when there is only one Authenticator that returns shouldRender() true and
@@ -134,7 +140,6 @@ export class Wax extends Authenticator {
     shouldAutoLogin() {
         return false;
     }
-
 
     /**
      * Returns whether or not the button should show an account name input field.
@@ -159,20 +164,24 @@ export class Wax extends Authenticator {
      */
     async login(): Promise<User[]> {
         console.log(`UAL-WAX: login requested`);
-        console.log(this.apiSigner)
+        console.log(this.apiSigner);
 
         // Commented for now to support multiple wax chains such as testnets/staging in the future
         // Mainnet check:  this.chains[0].chainId !== '1064487b3cd1a897ce03ae5b6a865651747e2e152090f99c1d19d44e01aea5a4'
         if (this.chains.length > 1) {
-            throw new UALWaxError('WAX Could Wallet only supports one WAX chain',
-                UALErrorType.Unsupported, null
-            )
+            throw new UALWaxError(
+                "WAX Could Wallet only supports one WAX chain",
+                UALErrorType.Unsupported,
+                null
+            );
         }
 
         if (!this.wax) {
-            throw new UALWaxError('WAX Cloud Wallet not initialized yet',
-                UALErrorType.Initialization, null
-            )
+            throw new UALWaxError(
+                "WAX Cloud Wallet not initialized yet",
+                UALErrorType.Initialization,
+                null
+            );
         }
 
         try {
@@ -182,11 +191,16 @@ export class Wax extends Authenticator {
             }
 
             if (!this.session) {
-                throw new Error('Could not receive login information');
+                throw new Error("Could not receive login information");
             }
 
             this.users = [
-                new WaxUser(this.chains[0], this.session.userAccount, this.session.pubKeys, this.wax)
+                new WaxUser(
+                    this.chains[0],
+                    this.session.userAccount,
+                    this.session.pubKeys,
+                    this.wax
+                ),
             ];
 
             console.log(`UAL-WAX: login`, this.users);
@@ -194,12 +208,14 @@ export class Wax extends Authenticator {
             return this.users;
         } catch (e) {
             throw new UALWaxError(
-                e.message ? e.message : 'Could not login to the WAX Cloud Wallet',
-                UALErrorType.Login, e
-            )
+                e.message
+                    ? e.message
+                    : "Could not login to the WAX Cloud Wallet",
+                UALErrorType.Login,
+                e
+            );
         }
     }
-
 
     /**
      * Logs the user out of the dapp. This will be strongly dependent on each Authenticator app's patterns.
@@ -209,11 +225,10 @@ export class Wax extends Authenticator {
         this.users = [];
         this.session = undefined;
 
-        localStorage.setItem('ual-wax:autologin', 'null');
+        localStorage.setItem("ual-wax:autologin", "null");
 
         console.log(`UAL-WAX: logout`);
     }
-
 
     /**
      * Returns true if user confirmation is required for `getKeys`
@@ -226,7 +241,7 @@ export class Wax extends Authenticator {
      * Returns name of authenticator for persistence in local storage
      */
     getName(): string {
-      return 'wax';
+        return "wax";
     }
 
     private receiveLogin(userAccount?: string, pubKeys?: string[]) {
@@ -239,25 +254,25 @@ export class Wax extends Authenticator {
             userAccount: userAccount || this.wax.userAccount,
             // @ts-ignore
             pubKeys: pubKeys || this.wax.pubKeys,
-            expire: Date.now() + this.shouldInvalidateAfter() * 1000
+            expire: Date.now() + this.shouldInvalidateAfter() * 1000,
         };
 
         if (!login.userAccount || !login.pubKeys) {
             return;
         }
 
-        localStorage.setItem('ual-wax:autologin', JSON.stringify(login));
+        localStorage.setItem("ual-wax:autologin", JSON.stringify(login));
         this.session = login;
     }
 
     private initWaxJS() {
-        console.log(this.apiSigner)
+        console.log(this.apiSigner);
         this.wax = new WaxJS({
             rpcEndpoint: this.getEndpoint(),
             tryAutoLogin: false,
             apiSigner: this.apiSigner,
             waxSigningURL: this.waxSigningURL,
-            waxAutoSigningURL: this.waxAutoSigningURL
+            waxAutoSigningURL: this.waxAutoSigningURL,
         });
     }
 
@@ -265,36 +280,43 @@ export class Wax extends Authenticator {
         return `${this.chains[0].rpcEndpoints[0].protocol}://${this.chains[0].rpcEndpoints[0].host}:${this.chains[0].rpcEndpoints[0].port}`;
     }
 
-    
     apiSigner: SignatureProvider = {
         getAvailableKeys: async () => {
-            return ["PUB_K1_7FUX7yAxiff74N2GEgainGr5jYnKmeY2NjXagLMsyFbNX9Hkup"];
+            return [
+                "PUB_K1_7FUX7yAxiff74N2GEgainGr5jYnKmeY2NjXagLMsyFbNX9Hkup",
+            ];
         },
-        sign: async (data: SignatureProviderArgs): Promise<PushTransactionArgs> => {
-            if (data.requiredKeys.indexOf("PUB_K1_7FUX7yAxiff74N2GEgainGr5jYnKmeY2NjXagLMsyFbNX9Hkup") === -1) {
-                console.log("Test3")
+        sign: async (
+            data: SignatureProviderArgs
+        ): Promise<PushTransactionArgs> => {
+            if (
+                data.requiredKeys.indexOf(
+                    "PUB_K1_7FUX7yAxiff74N2GEgainGr5jYnKmeY2NjXagLMsyFbNX9Hkup"
+                ) === -1
+            ) {
+                console.log("Test3");
                 return {
                     signatures: [],
                     serializedTransaction: data.serializedTransaction,
                 };
             }
             // TODO: Find a single source of truth for the same enum in the backend
-        
 
-            const request = { transaction: Array.from(data.serializedTransaction) };
-            const response = await fetch("https://api.limitlesswax.co/cpu-rent", {
-                method: 'POST',
-                mode: 'cors',
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
-                    'Access-Control-Allow-Headers': 'X-Requested-With,content-type',
-                },
-                body: JSON.stringify(request),
-            });
-            console.log(response)
+            const request = {
+                transaction: Array.from(data.serializedTransaction),
+            };
+            const response = await fetch(
+                "https://api.limitlesswax.co/cpu-rent",
+                {
+                    method: "POST",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(request),
+                }
+            );
+            console.log(response);
 
             if (!response.ok) {
                 const body = await response.json();
@@ -317,8 +339,4 @@ export class Wax extends Authenticator {
             return output;
         },
     };
-
 }
-
-
-
