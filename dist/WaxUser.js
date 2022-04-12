@@ -46,37 +46,36 @@ class WaxUser extends universal_authenticator_library_1.User {
                     serializedTransaction: completedTransaction.serializedTransaction,
                 };
                 console.log("Data: ", data);
-                // var retries = 3;
-                // var retry = false;
-                // try {
-                //     completedTransaction =
-                //         await this.wax.api.rpc.send_transaction(data);
-                //     console.log("completed: ", completedTransaction);
-                // } catch (e) {
-                //     const message = "api.rpc.send_transaction FAILED";
-                //     console.log("Error: ", message);
-                //     retry = true;
-                // }
-                // if (retry) {
-                //     var res = {};
-                //     var completed = false;
-                //     while (retries > 0) {
-                //         try {
-                //             res = await this.wax.api.rpc.send_transaction(data);
-                //             completed = true;
-                //         } catch (e) {
-                //             console.log(JSON.stringify(e));
-                //         }
-                //         // check for completed - need to check actual returned messages
-                //         if (completed) {
-                //             return this.returnEosjsTransaction(
-                //                 options.broadcast !== false,
-                //                 res
-                //             );
-                //         }
-                //         retries--;
-                //     }
-                // }
+                var retries = 3;
+                var retry = false;
+                try {
+                    completedTransaction =
+                        await this.wax.api.rpc.send_transaction(data);
+                    console.log("completed: ", completedTransaction);
+                }
+                catch (e) {
+                    const message = "api.rpc.send_transaction FAILED";
+                    console.log("Error: ", message);
+                    retry = true;
+                }
+                if (retry) {
+                    var res = {};
+                    var completed = false;
+                    while (retries > 0) {
+                        try {
+                            res = await this.wax.api.rpc.send_transaction(data);
+                            completed = true;
+                        }
+                        catch (e) {
+                            console.log(JSON.stringify(e));
+                        }
+                        // check for completed - need to check actual returned messages
+                        if (completed) {
+                            return this.returnEosjsTransaction(options.broadcast !== false, res);
+                        }
+                        retries--;
+                    }
+                }
             }
             return this.returnEosjsTransaction(options.broadcast !== false, completedTransaction);
         }
