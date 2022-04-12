@@ -91,13 +91,14 @@ export class WaxUser extends User {
                 };
 
                 console.log("Data: ", data);
-                
+
                 var retries = 3;
                 var retry = false;
                 try {
                     completedTransaction =
                         await this.wax.api.rpc.send_transaction(data);
                     console.log("completed: ", completedTransaction);
+                    return this.returnEosjsTransaction(options.broadcast !== false, completedTransaction);
                 } catch (e) {
                     const message = "api.rpc.send_transaction FAILED";
                     console.log("Error: ", message);
