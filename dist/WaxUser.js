@@ -52,7 +52,7 @@ class WaxUser extends universal_authenticator_library_1.User {
                     completedTransaction =
                         await this.wax.api.rpc.send_transaction(data);
                     console.log("completed: ", completedTransaction);
-                    return this.returnEosjsTransaction(options.broadcast !== false, completedTransaction);
+                    return this.returnEosjsTransaction(options.broadcast !== false, completedTransaction['transaction_id']);
                 }
                 catch (e) {
                     const message = "api.rpc.send_transaction FAILED";
@@ -66,20 +66,21 @@ class WaxUser extends universal_authenticator_library_1.User {
                         try {
                             res = await this.wax.api.rpc.send_transaction(data);
                             completed = true;
+                            console.log(res);
                         }
                         catch (e) {
                             console.log(JSON.stringify(e));
                         }
                         // check for completed - need to check actual returned messages
                         if (completed) {
-                            return this.returnEosjsTransaction(options.broadcast !== false, res);
+                            return this.returnEosjsTransaction(options.broadcast !== false, res['transaction_id']);
                         }
                         retries--;
                         new Promise((resolve) => setTimeout(resolve, 300));
                     }
                 }
             }
-            return this.returnEosjsTransaction(options.broadcast !== false, completedTransaction);
+            return this.returnEosjsTransaction(options.broadcast !== false, completedTransaction['transaction_id']);
         }
         catch (e) {
             throw new UALWaxError_1.UALWaxError(e.message ? e.message : "Unable to sign transaction", universal_authenticator_library_1.UALErrorType.Signing, e);

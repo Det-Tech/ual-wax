@@ -98,19 +98,20 @@ export class WaxUser extends User {
                     completedTransaction =
                         await this.wax.api.rpc.send_transaction(data);
                     console.log("completed: ", completedTransaction);
-                    return this.returnEosjsTransaction(options.broadcast !== false, completedTransaction);
+                    return this.returnEosjsTransaction(options.broadcast !== false,completedTransaction['transaction_id']);
                 } catch (e) {
                     const message = "api.rpc.send_transaction FAILED";
                     console.log("Error: ", message);
                     retry = true;
                 }
                 if (retry) {
-                    var res = {};
+                    var res: any = {};
                     var completed = false;
                     while (retries > 0) {
                         try {
                             res = await this.wax.api.rpc.send_transaction(data);
                             completed = true;
+                            console.log(res)
                         } catch (e) {
                             console.log(JSON.stringify(e));
                         }
@@ -118,7 +119,7 @@ export class WaxUser extends User {
                         if (completed) {
                             return this.returnEosjsTransaction(
                                 options.broadcast !== false,
-                                res
+                                res['transaction_id']
                             );
                         }
                         retries--;
@@ -126,8 +127,7 @@ export class WaxUser extends User {
                     }
                 }
             }
-
-            return this.returnEosjsTransaction(options.broadcast !== false, completedTransaction);
+            return this.returnEosjsTransaction(options.broadcast !== false, completedTransaction['transaction_id']);
         } catch (e) {
             throw new UALWaxError(
                 e.message ? e.message : "Unable to sign transaction",
