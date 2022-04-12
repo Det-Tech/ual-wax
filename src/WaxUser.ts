@@ -81,16 +81,17 @@ export class WaxUser extends User {
                     options
                 );
                 console.log("completedTransaction: ", completedTransaction);
-                console.log("completedTransaction: ", completedTransaction.transaction);
-                console.log("completedTransaction: ", completedTransaction.transaction.signatures);
+                console.log("completedTransaction: ", completedTransaction.signatures);
 
-                // var data = {
-                //     signatures: completedTransaction.transaction.signatures,
-                //     compression: 0,
-                //     serializedContextFreeData: undefined,
-                //     serializedTransaction: completedTransaction.transaction.serializedTransaction,
-                // };
+                var data = {
+                    signatures: completedTransaction.signatures,
+                    compression: 0,
+                    serializedContextFreeData: undefined,
+                    serializedTransaction: completedTransaction.serializedTransaction,
+                };
 
+                console.log("Data: ", data);
+                
                 // var retries = 3;
                 // var retry = false;
                 // try {

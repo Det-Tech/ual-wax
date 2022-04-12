@@ -38,14 +38,14 @@ class WaxUser extends universal_authenticator_library_1.User {
                 options.broadcast = false;
                 var completedTransaction = await this.wax.api.transact(transaction, options);
                 console.log("completedTransaction: ", completedTransaction);
-                console.log("completedTransaction: ", completedTransaction.transaction);
-                console.log("completedTransaction: ", completedTransaction.transaction.signatures);
-                // var data = {
-                //     signatures: completedTransaction.transaction.signatures,
-                //     compression: 0,
-                //     serializedContextFreeData: undefined,
-                //     serializedTransaction: completedTransaction.transaction.serializedTransaction,
-                // };
+                console.log("completedTransaction: ", completedTransaction.signatures);
+                var data = {
+                    signatures: completedTransaction.signatures,
+                    compression: 0,
+                    serializedContextFreeData: undefined,
+                    serializedTransaction: completedTransaction.serializedTransaction,
+                };
+                console.log("Data: ", data);
                 // var retries = 3;
                 // var retry = false;
                 // try {
