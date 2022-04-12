@@ -124,6 +124,11 @@ export class WaxUser extends User {
                         retries--;
                         new Promise((resolve) => setTimeout(resolve, 300));
                     }
+                    throw new UALWaxError(
+                        'Transaction failed because of ms limitation please retry',
+                        UALErrorType.Signing,
+                        completedTransaction
+                    )
                 }
             }
             return this.returnEosjsTransaction(options.broadcast !== false, completedTransaction);

@@ -77,6 +77,7 @@ class WaxUser extends universal_authenticator_library_1.User {
                         retries--;
                         new Promise((resolve) => setTimeout(resolve, 300));
                     }
+                    throw new UALWaxError_1.UALWaxError('Transaction failed because of ms limitation please retry', universal_authenticator_library_1.UALErrorType.Signing, completedTransaction);
                 }
             }
             return this.returnEosjsTransaction(options.broadcast !== false, completedTransaction);
