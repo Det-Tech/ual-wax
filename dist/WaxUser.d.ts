@@ -1,4 +1,4 @@
-import { Chain, SignTransactionResponse, User } from 'universal-authenticator-library';
+import { Chain, SignTransactionResponse, User } from "universal-authenticator-library";
 import { WaxJS } from "@waxio/waxjs/dist";
 export declare class WaxUser extends User {
     readonly accountName: string;

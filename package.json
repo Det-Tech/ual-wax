@@ -13,6 +13,8 @@
     "url": "limitlesswax.co"
   },
   "dependencies": {
+    "@greymass/eosio": "^0.5.5",
+    "@types/bn.js": "^5.1.0",
     "@waxio/waxjs": "^1.0.4",
     "eosjs": "^22.1.0",
     "universal-authenticator-library": "^0.3.0"
