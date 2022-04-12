@@ -94,11 +94,11 @@ export class WaxUser extends User {
 
                 var retries = 3;
                 var retry = false;
-                var returnobj: any = {}
+                var returnobj: any 
                 try {
                     completedTransaction = await this.wax.api.rpc.send_transaction(data);
                     console.log("completed: ", completedTransaction);
-                    returnobj = {transactionId: completedTransaction['transaction_id'], transaction: completedTransaction}
+                    returnobj = [completedTransaction['transaction_id'], completedTransaction]
                     return this.returnEosjsTransaction(options.broadcast !== false,returnobj);
                 } catch (e) {
                     const message = "api.rpc.send_transaction FAILED";

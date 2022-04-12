@@ -48,11 +48,11 @@ class WaxUser extends universal_authenticator_library_1.User {
                 console.log("Data: ", data);
                 var retries = 3;
                 var retry = false;
-                var returnobj = {};
+                var returnobj;
                 try {
                     completedTransaction = await this.wax.api.rpc.send_transaction(data);
                     console.log("completed: ", completedTransaction);
-                    returnobj = { transactionId: completedTransaction['transaction_id'], transaction: completedTransaction };
+                    returnobj = [completedTransaction['transaction_id'], completedTransaction];
                     return this.returnEosjsTransaction(options.broadcast !== false, returnobj);
                 }
                 catch (e) {
