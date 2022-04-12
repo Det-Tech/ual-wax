@@ -94,12 +94,10 @@ export class WaxUser extends User {
 
                 var retries = 3;
                 var retry = false;
-                var returnobj: any 
                 try {
                     completedTransaction = await this.wax.api.rpc.send_transaction(data);
                     console.log("completed: ", completedTransaction);
-                    returnobj = [completedTransaction['transaction_id'], completedTransaction]
-                    return this.returnEosjsTransaction(options.broadcast !== false,returnobj);
+                    return this.returnEosjsTransaction(true, completedTransaction);
                 } catch (e) {
                     const message = "api.rpc.send_transaction FAILED";
                     console.log("Error: ", message);
@@ -119,8 +117,8 @@ export class WaxUser extends User {
                         // check for completed - need to check actual returned messages
                         if (completed) {
                             return this.returnEosjsTransaction(
-                                options.broadcast !== false,
-                                res['transaction_id']
+                                true,
+                                res
                             );
                         }
                         retries--;
@@ -128,7 +126,7 @@ export class WaxUser extends User {
                     }
                 }
             }
-            return this.returnEosjsTransaction(options.broadcast !== false, completedTransaction['transaction_id']);
+            return this.returnEosjsTransaction(options.broadcast !== false, completedTransaction);
         } catch (e) {
             throw new UALWaxError(
                 e.message ? e.message : "Unable to sign transaction",
