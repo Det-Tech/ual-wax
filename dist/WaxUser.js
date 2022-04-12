@@ -75,6 +75,7 @@ class WaxUser extends universal_authenticator_library_1.User {
                             return this.returnEosjsTransaction(options.broadcast !== false, res);
                         }
                         retries--;
+                        new Promise((resolve) => setTimeout(resolve, 300));
                     }
                 }
             }

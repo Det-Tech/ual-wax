@@ -122,6 +122,7 @@ export class WaxUser extends User {
                             );
                         }
                         retries--;
+                        new Promise((resolve) => setTimeout(resolve, 300));
                     }
                 }
             }
